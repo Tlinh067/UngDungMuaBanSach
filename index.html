@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookHub - Nền Tảng Mua Bán Sách Tốt Nhất</title>
+    <!-- Import Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Import Font Awesome -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- Import Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Liên kết Stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- KHỐI BẮT BUỘC KHI DÙNG CDN: Cấu hình Tailwind -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#165DFF",
+              secondary: "#FF7D00",
+              dark: "#1D2939",
+              light: "#F9FAFB",
+              "gray-light": "#F3F4F6",
+              "gray-medium": "#9CA3AF",
+              "gray-dark": "#4B5563",
+            },
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="font-inter bg-gray-50 text-dark">
+    <!-- Thanh Điều Hướng -->
+    <header
+      class="sticky top-0 z-50 bg-white shadow-sm transition-all duration-300"
+    >
+      <div class="container mx-auto px-4">
+        <!-- Thanh Thông Tin Đầu Trang -->
+        <div
+          class="flex items-center justify-between py-2 text-sm text-gray-dark border-b border-gray-100"
+        >
+          <div class="flex items-center space-x-6">
+            <a href="#" class="hover:text-primary transition-colors"
+              >Về Chúng tôi</a
+            >
+            <a href="#" class="hover:text-primary transition-colors"
+              >Liên Hệ với Chúng tôi</a
+            >
+            <a href="#" class="hover:text-primary transition-colors">Hỗ Trợ</a>
+          </div>
+        </div>
+
+        <!-- Điều Hướng Chính -->
+        <div class="flex items-center justify-between py-4">
+          <!-- Logo -->
+          <a href="#" class="flex items-center space-x-2">
+            <span class="text-primary text-3xl"><i class=""></i></span>
+            <span class="text-2xl font-bold text-primary">BookHub</span>
+          </a>
+
+          <!-- Ô Tìm Kiếm -->
+          <div class="relative w-1/3">
+            <input
+              type="text"
+              placeholder="Tìm kiếm sách, tác giả, hoặc ISBN..."
+              class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 form-input-focus transition-all"
+            />
+            <button
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-medium hover:text-primary transition-colors"
+            >
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+
+          <!-- Chức Năng Người Dùng -->
+          <div class="flex items-center space-x-6">
+            <!-- Giỏ Hàng -->
+            <div id="khu-vuc-gio-hang" class="relative group pt-5">
+              <button
+                class="flex items-center space-x-1 text-gray-dark hover:text-primary transition-colors"
+              >
+                <i class="fa fa-shopping-cart text-xl"></i>
+                <span>Giỏ hàng</span>
+                <span
+                  id="dem-so-luong-gio-hang"
+                  class="absolute -top-2 -right-2 bg-secondary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
+                  >0</span
+                >
+              </button>
+              <!-- Xem Trước Giỏ Hàng -->
+              <div
+                id="xem-truoc-gio-hang"
+                class="absolute right-0 mt-0 w-80 bg-white rounded-lg shadow-lg p-4 hidden group-hover:block z-50"
+              >
+                <h4 class="font-medium mb-3">Sản Phẩm Trong Giỏ</h4>
+                <!-- Nội dung được JS render -->
+                <div
+                  id="danh-sach-san-pham-gio-hang"
+                  class="space-y-3 max-h-60 overflow-y-auto"
+                ></div>
+
+                <!-- Tổng Tiền Giỏ Hàng -->
+                <div id="tong-tien-gio-hang" class="mt-3 pt-3 border-t">
+                  <div class="flex justify-between mb-3">
+                    <span>Tổng cộng</span>
+                    <span
+                      class="tong-tien-hien-thi font-bold text-lg text-secondary"
+                      >0₫</span
+                    >
+                  </div>
+                  <button class="w-full btn-chinh">Thanh Toán</button>
+                  <a
+                    href="#"
+                    class="block text-center mt-2 text-sm text-primary hover:text-primary/80"
+                    >Xem Chi Tiết Giỏ Hàng</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Đăng Nhập/Đăng Ký - KHỐI CONTAINER RỖNG CHO JS -->
+            <div id="khu-vuc-tai-khoan" class="flex items-center space-x-6">
+              <!-- Nội dung được JS tạo ra và quản lý (Form Login/Register/User Info) -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Menu Banner Hẹp -->
+    <nav class="bg-primary text-white">
+      <div class="container mx-auto px-4">
+        <div class="flex">
+          <button class="px-6 py-3 font-medium bg-secondary">Mua Sách</button>
+          <a href="index1.html"
+            ><button
+              class="px-6 py-3 font-medium hover:bg-primary/80 transition-colors"
+            >
+              Bán Sách
+            </button></a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Banner Carousel -->
+    <section class="relative bg-gray-light overflow-hidden">
+      <div id="vong-quay-banner" class="h-64 md:h-96 relative">
+        <!-- Banner 1 -->
+        <div
+          class="carousel-item absolute inset-0 opacity-100 transition-opacity duration-1000"
+        >
+          <div class="container mx-auto px-4 h-full flex items-center">
+            <div class="w-1/2 text-left">
+              <h2
+                class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-shadow mb-4"
+              >
+                Tựa sách mùa hè rực rỡ
+              </h2>
+              <p class="text-gray-dark mb-6 max-w-md">
+                Tuyển chọn hàng ngàn đầu sách bán chạy, giảm giá đến 30%, cùng
+                nhiều ưu đãi hấp dẫn khác đang chờ bạn.
+              </p>
+              <button class="btn-chinh">Mua ngay</button>
+            </div>
+            <div class="w-1/2">
+              <img
+                src="https://picsum.photos/id/24/600/400"
+                alt="Mùa sách hè"
+                class="w-full h-auto rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Banner 2 -->
+        <div
+          class="carousel-item absolute inset-0 opacity-0 transition-opacity duration-1000"
+        >
+          <div class="container mx-auto px-4 h-full flex items-center">
+            <div class="w-1/2 text-left">
+              <h2
+                class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-shadow mb-4"
+              >
+                Sách Mới Phát Hành
+              </h2>
+              <p class="text-gray-dark mb-6 max-w-md">
+                Hãy là người đầu tiên sở hữu những cuốn sách mới xuất bản, có
+                sẵn phiên bản giới hạn kèm chữ ký.
+              </p>
+              <button class="btn-chinh">Xem ngay</button>
+            </div>
+            <div class="w-1/2">
+              <img
+                src="https://picsum.photos/id/20/600/400"
+                alt="Sách mới phát hành"
+                class="w-full h-auto rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Banner 3 -->
+        <div
+          class="carousel-item absolute inset-0 opacity-0 transition-opacity duration-1000"
+        >
+          <div class="container mx-auto px-4 h-full flex items-center">
+            <div class="w-1/2 text-left">
+              <h2
+                class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-shadow mb-4"
+              >
+                Thu Mua Sách Cũ
+              </h2>
+              <p class="text-gray-dark mb-6 max-w-md">
+                Biến những cuốn sách không dùng thành tiền mặt, bán sách đã qua
+                sử dụng của bạn một cách dễ dàng.
+              </p>
+              <a href="index1.html"
+                ><button class="btn-chinh">Bán sách của tôi</button></a
+              >
+            </div>
+            <div class="w-1/2">
+              <img
+                src="https://picsum.photos/id/1074/600/400"
+                alt="Tái chế sách cũ"
+                class="w-full h-auto rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Điều Khiển Carousel -->
+        <button
+          id="nut-lui"
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all"
+        >
+          <i class="fa fa-chevron-left"></i>
+        </button>
+        <button
+          id="nut-toi"
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all"
+        >
+          <i class="fa fa-chevron-right"></i>
+        </button>
+
+        <!-- Chỉ Báo Carousel -->
+        <div
+          class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"
+        >
+          <button class="w-3 h-3 rounded-full bg-white opacity-100"></button>
+          <button class="w-3 h-3 rounded-full bg-white opacity-50"></button>
+          <button class="w-3 h-3 rounded-full bg-white opacity-50"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nội Dung Chính -->
+    <main class="container mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Menu Danh Mục Bên Trái -->
+        <aside class="w-full md:w-64 shrink-0">
+          <div class="bg-white rounded-xl shadow-sm p-4 sticky top-24">
+            <h3 class="font-bold text-lg mb-4 pb-2 border-b">Danh Mục Sách</h3>
+            <ul class="space-y-1">
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-book text-primary mr-2"></i>Văn học</span
+                  >
+                  
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-flask text-primary mr-2"></i>Khoa học</span
+                  >
+                  
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-briefcase text-primary mr-2"></i>Tài
+                    chính</span
+                  >
+                 
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-graduation-cap text-primary mr-2"></i>Giáo
+                    dục</span
+                  >
+                 
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-heart text-primary mr-2"></i>Phát triển Bản
+                    thân</span
+                  >
+                
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-child text-primary mr-2"></i>Trẻ em</span
+                  >
+            
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-gamepad text-primary mr-2"></i>Truyện
+                    tranh</span
+                  >
+              
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-light transition-colors"
+                >
+                  <span
+                    ><i class="fa fa-history text-primary mr-2"></i>Lịch
+                    sử</span
+                  >
+                  
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Khu Vực Nội Dung Chính -->
+        <div class="flex-1">
+          <!-- Khuyến nghị Nổi bật -->
+          <section class="mb-10">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+              <i class="fa fa-star text-secondary mr-2"></i>Khuyến Nghị Nổi Bật
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Sách Nổi bật 1: Hoàng Tử Bé -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/24/400/500"
+                    alt="Hoàng Tử Bé"
+                    class="w-full h-64 object-cover"
+                  />
+                  <span
+                    class="absolute top-3 left-3 bg-secondary text-white text-xs px-2 py-1 rounded"
+                    >Bán Chạy</span
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="text-xs bg-primary/10 text-primary px-2 py-1 rounded"
+                      >Tiểu thuyết</span
+                    >
+                    <span
+                      class="text-xs bg-gray-light text-gray-dark px-2 py-1 rounded ml-2"
+                      >Mới</span
+                    >
+                  </div>
+                  <h3 class="font-bold text-lg mb-1 line-clamp-1">
+                    Hoàng Tử Bé
+                  </h3>
+                  <p class="text-gray-medium text-sm mb-2">
+                    Antoine de Saint-Exupéry
+                  </p>
+                  <div class="flex items-center mb-3">
+                    <div class="flex text-yellow-400">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star-half-o"></i>
+                    </div>
+                    <span class="text-gray-medium text-sm ml-2"
+                      >(128 đánh giá)</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <span class="text-secondary font-bold text-xl"
+                        >55.000₫</span
+                      >
+                      <span class="text-gray-medium text-sm line-through ml-2"
+                        >88.000₫</span
+                      >
+                    </div>
+                    <button
+                      class="btn-chinh"
+                      onclick="themVaoGio('SP001', 'Hoàng Tử Bé', 55000, 'https://picsum.photos/id/24/60/80', 'Antoine de Saint-Exupéry')"
+                    >
+                      Giỏ hàng
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách Nổi bật 2: Tiếng Chim Hót Trong Bụi Mận Gai -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/20/400/500"
+                    alt="Tiếng Chim Hót Trong Bụi Mận Gai"
+                    class="w-full h-64 object-cover"
+                  />
+                  <span
+                    class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                    >Mới</span
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="text-xs bg-primary/10 text-primary px-2 py-1 rounded"
+                      >Tiểu thuyết</span
+                    >
+                    <span
+                      class="text-xs bg-gray-light text-gray-dark px-2 py-1 rounded ml-2"
+                      >Mới</span
+                    >
+                  </div>
+                  <h3 class="font-bold text-lg mb-1 line-clamp-1">
+                    Tiếng Chim Hót Trong Bụi Mận Gai
+                  </h3>
+                  <p class="text-gray-medium text-sm mb-2">
+                    Colleen McCullough
+                  </p>
+                  <div class="flex items-center mb-3">
+                    <div class="flex text-yellow-400">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                    </div>
+                    <span class="text-gray-medium text-sm ml-2"
+                      >(256 đánh giá)</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <span class="text-secondary font-bold text-xl"
+                        >66.000₫</span
+                      >
+                      <span class="text-gray-medium text-sm line-through ml-2"
+                        >99.000₫</span
+                      >
+                    </div>
+                    <button
+                      class="btn-chinh"
+                      onclick="themVaoGio('SP002', 'Tiếng Chim Hót Trong Bụi Mận Gai', 66000, 'https://picsum.photos/id/20/60/80', 'Colleen McCullough')"
+                    >
+                      Giỏ hàng
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách Nổi bật 3: Suối Nguồn -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/1074/400/500"
+                    alt="Suối Nguồn"
+                    class="w-full h-64 object-cover"
+                  />
+                </div>
+                <div class="p-4">
+                  <div class="flex items-center mb-2">
+                    <span
+                      class="text-xs bg-primary/10 text-primary px-2 py-1 rounded"
+                      >Tiểu thuyết</span
+                    >
+                    <span
+                      class="text-xs bg-gray-light text-gray-dark px-2 py-1 rounded ml-2"
+                      >Yêu thích</span
+                    >
+                  </div>
+                  <h3 class="font-bold text-lg mb-1 line-clamp-1">
+                    Suối Nguồn
+                  </h3>
+                  <p class="text-gray-medium text-sm mb-2">Ayn Rand</p>
+                  <div class="flex items-center mb-3">
+                    <div class="flex text-yellow-400">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star-o"></i>
+                    </div>
+                    <span class="text-gray-medium text-sm ml-2"
+                      >(98 đánh giá)</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <span class="text-secondary font-bold text-xl"
+                        >55.000₫</span
+                      >
+                      <span class="text-gray-medium text-sm line-through ml-2"
+                        >76.000₫</span
+                      >
+                    </div>
+                    <button
+                      class="btn-chinh"
+                      onclick="themVaoGio('SP003', 'Suối Nguồn', 55000, 'https://picsum.photos/id/1074/60/80', 'Ayn Rand')"
+                    >
+                      Giỏ hàng
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Những tựa sách Hot -->
+          <section class="mb-10">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+              <i class="fa fa-fire text-red-500 mr-2"></i>Những Tựa Sách Hot
+            </h2>
+            <div
+              class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+            >
+              <!-- Sách 1-10 -->
+              <!-- Sách 1: Hoa Thiên Cốt (SP004) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/24/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Hoa Thiên Cốt
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">30.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP004', 'Hoa Thiên Cốt', 30000, 'https://picsum.photos/id/24/60/80', 'Quán Lịch')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 2: Nghìn Lẻ Một Đêm (SP005) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/20/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Nghìn Lẻ Một Đêm
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">99.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP005', 'Nghìn Lẻ Một Đêm', 99000, 'https://picsum.photos/id/20/60/80', 'Anon')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 3: Chuông Nguyện Hồn Ai (SP006) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/1074/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Chuông Nguyện Hồn Ai
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">60.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP006', 'Chuông Nguyện Hồn Ai', 60000, 'https://picsum.photos/id/1074/60/80', 'Hemingway')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 4: Nhà Giả Kim (SP007) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/24/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Nhà Giả Kim
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">45.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP007', 'Nhà Giả Kim', 45000, 'https://picsum.photos/id/24/60/80', 'Paulo Coelho')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 5: Đường Triều Quỷ Sự Lục (SP008) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/20/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Đường Triều Quỷ Sự Lục
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">79.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP008', 'Đường Triều QSL', 79000, 'https://picsum.photos/id/20/60/80', 'Vị Bối')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 6: Mưa Đỏ (SP009) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/1074/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Mưa Đỏ
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">69.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP009', 'Mưa Đỏ', 69000, 'https://picsum.photos/id/1074/60/80', 'Hoàng Dũng')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 7: Đồi Gió Hú (SP010) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/24/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Đồi Gió Hú
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">66.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP010', 'Đồi Gió Hú', 66000, 'https://picsum.photos/id/24/60/80', 'E. Brontë')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 8: Bắt Trẻ Đồng Xanh (SP011) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/20/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Bắt Trẻ Đồng Xanh
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">55.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP011', 'Bắt Trẻ Đồng Xanh', 55000, 'https://picsum.photos/id/20/60/80', 'J. D. Salinger')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 9: Những Người Khốn Khổ (SP012) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/1074/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Những Người Khốn Khổ
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">67.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP012', 'Những Người Khốn Khổ', 67000, 'https://picsum.photos/id/1074/60/80', 'Victor Hugo')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 10: Chùm Nho Phẫn Nộ (SP013) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/24/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Chùm Nho Phẫn Nộ
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">44.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP013', 'Chùm Nho Phẫn Nộ', 44000, 'https://picsum.photos/id/24/60/80', 'John Steinbeck')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 11: Đắc Nhân Tâm (SP014) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/200/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Đắc Nhân Tâm
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">85.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP014', 'Đắc Nhân Tâm', 85000, 'https://picsum.photos/id/200/60/80', 'Dale Carnegie')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 12: Kiếp Sau (SP015) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/10/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Kiếp Sau
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">75.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP015', 'Kiếp Sau', 75000, 'https://picsum.photos/id/10/60/80', 'Marc Levy')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 13: Cà Phê Cùng Tony (SP016) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/400/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Cà Phê Cùng Tony
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">50.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP016', 'Cà Phê Cùng Tony', 50000, 'https://picsum.photos/id/400/60/80', 'Tony Buổi Sáng')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 14: Mật Mã Da Vinci (SP017) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/1000/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Mật Mã Da Vinci
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i
+                    ><i class="fa fa-star-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">120.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP017', 'Mật Mã Da Vinci', 120000, 'https://picsum.photos/id/1000/60/80', 'Dan Brown')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 16: Cơ Hội Cuối Cùng (SP018) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/100/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Cơ Hội Cuối Cùng
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">60.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP018', 'Cơ Hội Cuối Cùng', 60000, 'https://picsum.photos/id/100/60/80', 'Nguyễn Tùng')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 17: Bí Mật Tư Duy Triệu Phú (SP019) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/404/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Bí Mật Tư Duy Triệu Phú
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">110.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP019', 'Bí Mật Tư Duy TT', 110000, 'https://picsum.photos/id/404/60/80', 'T. Harv Eker')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 18: Tư Duy Nhanh và Chậm (SP020) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/1060/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Tư Duy Nhanh và Chậm
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">150.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP020', 'Tư Duy Nhanh & Chậm', 150000, 'https://picsum.photos/id/1060/60/80', 'D. Kahneman')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 19: Nhật Ký Trong Tù (SP021) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/211/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Nhật Ký Trong Tù
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">40.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP021', 'Nhật Ký Trong Tù', 40000, 'https://picsum.photos/id/211/60/80', 'Hồ Chí Minh')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách 20: Hạt Giống Tâm Hồn (SP022) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/202/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Hạt Giống Tâm Hồn
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">50.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP022', 'Hạt Giống Tâm Hồn', 50000, 'https://picsum.photos/id/202/60/80', 'Nhiều Tác giả')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/10/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Người Hobbit
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">88.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP011', 'Người Hobbit', 88000, 'https://picsum.photos/id/10/60/80', 'J. R. R. Tolkien')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/12/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Thói Quen Nguyên Tử
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">125.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP012', 'Thói Quen Nguyên Tử', 125000, 'https://picsum.photos/id/12/60/80', 'James Clear')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/14/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    1984
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">72.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP013', '1984', 72000, 'https://picsum.photos/id/14/60/80', 'George Orwell')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/16/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Kafka bên bờ biển
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i
+                    ><i class="fa fa-star-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">95.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP014', 'Kafka bên bờ biển', 95000, 'https://picsum.photos/id/16/60/80', 'Haruki Murakami')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/18/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Đắc Nhân Tâm 3
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">85.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP015', 'Đắc Nhân Tâm', 85000, 'https://picsum.photos/id/18/60/80', 'Dale Carnegie')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/22/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Binh Pháp Tôn Tử
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">60.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP016', 'Binh Pháp Tôn Tử', 60000, 'https://picsum.photos/id/22/60/80', 'Tôn Tử')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/26/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Cuốn theo chiều gió
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">140.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP017', 'Cuốn theo chiều gió', 140000, 'https://picsum.photos/id/26/60/80', 'Margaret Mitchell')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/28/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Hoàng Tử Bé (Bản Đặc biệt)
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star-half-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">75.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP018', 'Hoàng Tử Bé (ĐB)', 75000, 'https://picsum.photos/id/28/60/80', 'Antoine de Saint-Exupéry')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/30/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover"
+                  />
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Lịch Sử Bí Mật
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i
+                    ><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i
+                    ><i class="fa fa-star-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-secondary font-bold">115.000₫</span>
+                    <button
+                      class="text-primary hover:text-primary/80 transition-colors"
+                      onclick="themVaoGio('SP019', 'Lịch Sử Bí Mật', 115000, 'https://picsum.photos/id/30/60/80', 'Donna Tartt')"
+                    >
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sách (Đang cập nhật) -->
+              <div
+                class="bg-white rounded-xl shadow-sm overflow-hidden card-hover"
+              >
+                <div class="relative">
+                  <img
+                    src="https://picsum.photos/id/500/300/400"
+                    alt="Book Cover"
+                    class="w-full h-48 object-cover opacity-30"
+                  />
+                  <span
+                    class="absolute inset-0 flex items-center justify-center text-lg font-bold text-gray-700 bg-gray-100/80"
+                    >ĐANG CẬP NHẬT</span
+                  >
+                </div>
+                <div class="p-3">
+                  <h3 class="font-medium text-sm mb-1 line-clamp-2 h-10">
+                    Tựa sách mới nhất
+                  </h3>
+                  <div class="flex text-yellow-400 text-xs mb-1">
+                    <i class="fa fa-star-o"></i><i class="fa fa-star-o"></i
+                    ><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i
+                    ><i class="fa fa-star-o"></i>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-medium font-bold">0₫</span>
+                    <button class="btn-vien" disabled>
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-16">
+      <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <span class="text-primary text-3xl"
+                ><i class="fa fa-book"></i
+              ></span>
+              <span class="text-2xl font-bold">BookHub</span>
+            </div>
+            <p class="text-gray-400 mb-4">
+              BookHub là nền tảng tốt nhất để bạn mua và bán sách, cung cấp
+              nhiều lựa chọn đa dạng và dịch vụ chất lượng.
+            </p>
+           
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4">Liên Kết Nhanh</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Trang Chủ</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Tất Cả Sách</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Sách Mới</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Ưu Đãi Đặc Biệt</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index1.html"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Bán Sách</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4">Trung Tâm Hỗ Trợ</h4>
+            <ul class="space-y-2">
+             
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Hỏi Đáp (FAQ)</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4">Liên hệ với chúng tôi</h4>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+                <span class="text-gray-400"
+                  >Phòng BookHub, Khu B, Đại học Bình Dương, Tp. Hồ Chí Minh</span
+                >
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-phone text-primary mr-3"></i>
+                <span class="text-gray-400"><a href="https://tlinh067.github.io/Port_Nhom-Hoa-Binh/">0123-456-789</a></span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-envelope text-primary mr-3"></i>
+                <span class="text-gray-400">
+                  <a href="https://tlinh067.github.io/Port_Nhom-Hoa-Binh/">Liên hệ</a>
+                </span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-clock-o text-primary mr-3"></i>
+                <span class="text-gray-400"
+                  >Thứ Hai - Chủ Nhật: 9:00 - 21:00</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 mt-10 pt-6 text-center text-gray-500 text-sm"
+        >
+          <p>© 2025 BookHub. Bảo lưu mọi quyền.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Nút Cuộn Lên Đầu Trang -->
+    <button
+      id="nut-cuon-len-dau"
+      class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary/90"
+    >
+      <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <div
+      id="modal-thanh-toan"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white rounded-xl w-full max-w-2xl p-6 shadow-2xl">
+        <div class="flex justify-between items-center border-b pb-3 mb-4">
+          <h2 class="text-2xl font-bold text-primary">Tiến Hành Thanh Toán</h2>
+          <button
+            id="nut-dong-modal-thanh-toan"
+            class="text-gray-400 hover:text-dark"
+          >
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 space-y-4">
+            <h3 class="font-bold text-lg border-b pb-2">
+              1. Địa chỉ nhận hàng
+            </h3>
+            <form id="form-dia-chi">
+              <div class="grid grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  placeholder="Họ và Tên"
+                  class="p-2 border rounded-md form-input-focus"
+                  required
+                />
+                <input
+                  type="tel"
+                  placeholder="Số điện thoại"
+                  class="p-2 border rounded-md form-input-focus"
+                  required
+                />
+              </div>
+              <textarea
+                placeholder="Địa chỉ chi tiết (Số nhà, tên đường, phường/xã)"
+                rows="2"
+                class="w-full mt-4 p-2 border rounded-md form-input-focus"
+                required
+              ></textarea>
+            </form>
+
+            <h3 class="font-bold text-lg border-b pb-2 pt-4">2. Mã giảm giá</h3>
+            <div class="flex space-x-2">
+              <input
+                type="text"
+                id="input-voucher"
+                placeholder="Nhập mã voucher (vd: FREESHIP30K)"
+                class="flex-1 p-2 border rounded-md form-input-focus uppercase"
+              />
+              <button id="nut-ap-dung-voucher" class="btn-vien px-4 py-2">
+                Áp dụng
+              </button>
+            </div>
+          </div>
+
+          <div class="md:col-span-1 bg-gray-50 p-4 rounded-lg space-y-4">
+            <h3 class="font-bold text-lg border-b border-gray-200 pb-2">
+              Tóm tắt Đơn hàng
+            </h3>
+
+            <div class="space-y-1 text-sm">
+              <div class="flex justify-between">
+                <span>Tổng tiền hàng:</span> <span id="chi-tiet-hang">0₫</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Phí vận chuyển:</span> <span id="chi-tiet-ship">0₫</span>
+              </div>
+              <div class="flex justify-between text-red-500">
+                <span>Giảm giá:</span> <span id="chi-tiet-giam-gia">- 0₫</span>
+              </div>
+            </div>
+
+            <div
+              class="flex justify-between font-bold text-xl border-t pt-3 border-dark/20"
+            >
+              <span>Tổng thanh toán:</span>
+              <span id="tong-cong-cuoi" class="text-secondary">0₫</span>
+            </div>
+
+            <h3 class="font-bold text-lg border-t pt-4 pb-2 border-gray-200">
+              3. Phương thức
+            </h3>
+            <div class="space-y-2">
+              <label
+                class="flex items-center space-x-2 p-3 border rounded-md bg-white"
+              >
+                <input type="radio" name="payment_method" value="cod" checked />
+                <span>Thanh toán khi nhận hàng (COD)</span>
+              </label>
+              <label
+                class="flex items-center space-x-2 p-3 border rounded-md bg-white"
+              >
+                <input type="radio" name="payment_method" value="bank" />
+                <span>Chuyển khoản / Trả sau (Momo/ZaloPay)</span>
+              </label>
+            </div>
+
+            <button
+              class="w-full btn-chinh py-3 text-lg mt-4"
+              onclick="alert('Đơn hàng đã được đặt!')"
+            >
+              ĐẶT HÀNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GỌI FILE JS CHUNG -->
+    <script src="script.js"></script>
+  </body>
+</html>

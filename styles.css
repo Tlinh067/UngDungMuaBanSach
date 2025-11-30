@@ -1,0 +1,100 @@
+/* styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CUSTOM STYLES BẰNG CSS THUẦN TÚY (Dễ đọc) */
+
+/* --- Custom Utilities --- */
+.card-hover {
+    transition: all 0.3s ease-in-out;
+}
+.card-hover:hover {
+    /* Tương đương hover:shadow-lg và hover:-translate-y-1 */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-4px);
+}
+
+/* Input Focus (form-input-focus) */
+.form-input-focus:focus {
+    /* Tương đương focus:ring-2 focus:ring-primary/30 và focus:border-primary */
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(22, 93, 255, 0.3); /* Dùng màu Primary */
+    border-color: #165DFF; 
+}
+
+/* --- Custom Components (Buttons) --- */
+
+/* Nut Chinh (Primary Button: btn-chinh) */
+.btn-chinh { 
+    background-color: #FF7D00; /* secondary */
+    color: white;
+    padding: 8px 16px; /* py-2 px-4 */
+    border-radius: 6px; /* rounded-md */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: none;
+    cursor: pointer;
+}
+.btn-chinh:hover {
+    background-color: rgba(255, 125, 0, 0.9);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Nut Vien (Outline Button: btn-vien) */
+.btn-vien {
+    border: 1px solid #165DFF; /* border-primary */
+    color: #165DFF; /* text-primary */
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+    background-color: transparent;
+    cursor: pointer;
+}
+.btn-vien:hover {
+    background-color: rgba(22, 93, 255, 0.1); /* hover:bg-primary/10 */
+}
+
+/* --- Nút Đăng nhập Xã hội (Social Login Buttons) --- */
+
+/* Base style cho các nút đăng nhập xã hội (nut-dang-nhap-base) */
+/* (Đây là phần khó nhất vì nó gộp nhiều lớp utility) */
+.nut-dang-nhap-base {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px; /* py-2 */
+    margin-right: 8px; /* space-x-2 cho icon/text */
+    border-radius: 6px;
+    border: 1px solid #E5E7EB; /* border-gray-200 */
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.nut-dang-nhap-fb {
+    background-color: #165DFF; /* blue-600 */
+    color: white;
+}
+.nut-dang-nhap-fb:hover {
+    background-color: #1569e9; /* blue-700 hơi tối hơn */
+}
+
+.nut-dang-nhap-google {
+    background-color: white; 
+    color: #4B5563; /* text-gray-700 */
+}
+.nut-dang-nhap-google:hover {
+    background-color: #F9FAFB; /* hover:bg-gray-50 */
+}
+
+
+/* Global styles  */
+body {
+    @apply font-inter bg-gray-50 text-dark;
+}
+html {
+    scroll-behavior: smooth;
+}
